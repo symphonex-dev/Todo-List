@@ -1,0 +1,455 @@
+/* ═══════════════════════════════════════════════════════════════
+   BLOC 1 — VARIABLES CSS (DESIGN TOKENS)
+   Toutes les couleurs et valeurs réutilisables sont centralisées
+   ici. Pour changer le thème, il suffit de modifier ces variables.
+═══════════════════════════════════════════════════════════════ */
+:root {
+  /* Couleurs de fond */
+  --bg-page:     #0b0f14;
+  --bg-card:     #141b24;
+  --bg-surface: #1c2633;
+  --bg-input:   #1f2d3d;
+
+  /* Bordures */
+  --border:     #263547;
+  --border-focus: #10b981;
+
+  /* Textes */
+  --text-primary:   #f0f6fc;
+  --text-secondary: #94a3b8;
+  --text-disabled:  #4b6070;
+
+  /* Accents */
+  --emerald:       #10b981;
+  --emerald-dark:  #059669;
+  --emerald-glow:  rgba(16, 185, 129, 0.18);
+  --blue-tech:     #38bdf8;
+  --blue-glow:     rgba(56, 189, 248, 0.15);
+  --danger:        #f87171;
+  --danger-glow:   rgba(248, 113, 113, 0.15);
+
+  /* Formes & transitions */
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  18px;
+  --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+  --speed-fast: 180ms;
+  --speed-med:  280ms;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOC 2 — RESET & BASE
+═══════════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 48px 16px 80px;
+  /* Bruit visuel subtil pour donner de la profondeur au fond */
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16,185,129,0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(56,189,248,0.06), transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOC 3 — CARTE PRINCIPALE (App container)
+═══════════════════════════════════════════════════════════════ */
+.app-wrapper {
+  width: 100%;
+  max-width: 580px;
+}
+
+.app-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03),
+    0 24px 64px rgba(0, 0, 0, 0.5),
+    0 0 80px rgba(16, 185, 129, 0.04);
+  animation: cardIn var(--speed-med) var(--ease) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOC 4 — EN-TÊTE
+═══════════════════════════════════════════════════════════════ */
+.app-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.app-title {
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  /* Dégradé texte vert → bleu */
+  background: linear-gradient(135deg, var(--emerald) 0%, var(--blue-tech) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.app-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOC 5 — FORMULAIRE D'AJOUT
+═══════════════════════════════════════════════════════════════ */
+.todo-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.todo-input {
+  flex: 1;
+  padding: 13px 16px;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition:
+    border-color var(--speed-fast) var(--ease),
+    box-shadow var(--speed-fast) var(--ease);
+}
+
+.todo-input::placeholder {
+  color: var(--text-disabled);
+}
+
+.todo-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--emerald-glow);
+}
+
+.btn-add {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--emerald), var(--emerald-dark));
+  border: none;
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform var(--speed-fast) var(--ease),
+    box-shadow var(--speed-fast) var(--ease),
+    filter var(--speed-fast) var(--ease);
+}
+
+.btn-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+  filter: brightness(1.1);
+}
+
+.btn-add:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOC 6 — BARRE DE FILTRES
+═══════════════════════════════════════════════════════════════ */
+.filter-bar {
+  display: flex;
+  gap: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.filter-btn {
+  flex: 1;
+  padding: 8px 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background var(--speed-fast) var(--ease),
+    color var(--speed-fast) var(--ease);
+}
+
+.filter-btn:hover:not(.active) {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.filter-btn.active {
+  background: var(--blue-tech);
+  color: #0b0f14;
+  font-weight: 600;
+  box-shadow: 0 2px 10px var(--blue-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOC 7 — LISTE & ÉLÉMENTS
+═══════════════════════════════════════════════════════════════ */
+.todo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 232px; /* Hauteur minimale fixe pour éviter que la carte ne se contracte ou saute brutalement */
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 2px; /* Espace pour la scrollbar */
+}
+
+/* Scrollbar personnalisée */
+.todo-list::-webkit-scrollbar       { width: 5px; }
+.todo-list::-webkit-scrollbar-track { background: transparent; }
+.todo-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+/* ── Chaque ligne d'objectif ── */
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  min-height: 52px; /* Fixe une hauteur minimale uniforme pour stabiliser le DOM */
+  transition:
+    border-color var(--speed-fast) var(--ease),
+    background var(--speed-fast) var(--ease);
+  animation: itemIn 220ms var(--ease) both;
+}
+
+@keyframes itemIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.todo-item:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.04);
+}
+
+/* État "accompli" : fond vert subtil + bordure verte */
+.todo-item.completed {
+  border-color: rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.04);
+}
+
+/* ── Zone de texte modifiable lors du double-clic ── */
+.todo-edit-input {
+  flex: 1;
+  padding: 4px 8px;
+  background: var(--bg-input);
+  border: 1px solid var(--blue-tech);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  box-shadow: 0 0 8px var(--blue-glow);
+}
+
+/* ── Checkbox ── */
+.todo-checkbox {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--emerald);
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* ── Texte de l'objectif ── */
+.todo-text {
+  flex: 1;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+  word-break: break-word;
+  transition: color var(--speed-fast) var(--ease);
+}
+
+/* Texte barré + grisé quand accompli */
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: var(--text-disabled);
+}
+
+/* ── Bouton supprimer ── */
+.btn-delete {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  color: var(--text-disabled);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background var(--speed-fast) var(--ease),
+    border-color var(--speed-fast) var(--ease),
+    color var(--speed-fast) var(--ease);
+}
+
+.btn-delete:hover {
+  background: var(--danger-glow);
+  border-color: rgba(248, 113, 113, 0.35);
+  color: var(--danger);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOC 8 — ÉTAT VIDE
+═══════════════════════════════════════════════════════════════ */
+.empty-state {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  padding: 32px 0 16px;
+  letter-spacing: 0.01em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOC 9 — PIED DE LISTE (compteur + actions)
+═══════════════════════════════════════════════════════════════ */
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  gap: 12px;
+}
+
+.counter {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex: 0 0 130px; /* Fixe une largeur de base stricte à gauche pour bloquer le décalage */
+}
+
+/* Conteneur des deux boutons d'action */
+.footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  gap: 8px;
+}
+
+/* Nouveau bouton stylisé : Recommencer ma journée */
+.btn-reset {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition:
+    color var(--speed-fast) var(--ease),
+    background var(--speed-fast) var(--ease);
+}
+
+.btn-reset:hover {
+  color: var(--blue-tech);
+  background: var(--blue-glow);
+}
+
+.btn-clear {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition:
+    color var(--speed-fast) var(--ease),
+    background var(--speed-fast) var(--ease);
+}
+
+.btn-clear:hover {
+  color: var(--danger);
+  background: var(--danger-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOC 10 — RESPONSIVE (mobile ≤ 480px)
+═══════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  body { padding: 24px 12px 60px; }
+
+  .app-card { padding: 24px 18px; }
+
+  .todo-input { font-size: 0.9rem; }
+
+  .app-footer {
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .counter {
+    flex: none;
+    width: auto;
+  }
+
+  .footer-actions {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+    flex: none;
+  }
+}
