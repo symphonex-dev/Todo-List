@@ -1,29 +1,3 @@
-// ─────────────────────────────────────────────────────────────────
-// COMPOSANT : TodoItem
-//
-// Responsabilité unique : afficher UNE ligne d'objectif avec
-// sa checkbox, son texte (ou un champ de saisie s'il est édité)
-// et son bouton de suppression.
-//
-// PROPS REÇUES :
-//   • todo     (object)   → { id, text, completed }
-//   • onDelete (function) → pour supprimer cet objectif
-//   • onToggle (function) → pour basculer son état complété
-//   • onEdit   (function) → pour enregistrer les modifications textuelles
-//
-// DIFFÉRENCE JS PUR :
-// En JS pur, la fonction createGoalElement() construisait
-// manuellement chaque élément du DOM :
-//   const li = document.createElement('li');
-//   const checkbox = document.createElement('input');
-//   checkbox.addEventListener('change', () => toggleGoal(id));
-//   li.appendChild(checkbox);  ... etc.
-//
-// En React, tout cela s'écrit en JSX directement : on décrit
-// à quoi doit ressembler l'élément, React crée le DOM pour nous.
-// Les gestionnaires d'événements sont des props JSX (onChange,
-// onClick) et non des addEventListener séparés.
-// ─────────────────────────────────────────────────────────────────
 import { useState } from 'react';
 
 export default function TodoItem({ todo, onDelete, onToggle, onEdit }) {
@@ -58,18 +32,13 @@ export default function TodoItem({ todo, onDelete, onToggle, onEdit }) {
   return (
     /*
       La classe CSS "completed" est ajoutée conditionnellement
-      via un template string (backticks + expression JS).
-      DIFFÉRENCE JS PUR : on utilisait li.classList.add('completed').
-      En React, on calcule la className directement dans le JSX.
+      via un template string (backticks + expression JS)
     */
     <li className={`todo-item ${todo.completed ? 'completed' : ''} ${isEditing ? 'editing' : ''}`}>
 
       {/*
         CHECKBOX :
-        onChange est l'équivalent JSX de addEventListener('change').
-        On appelle onToggle avec l'id du todo pour remonter
-        l'événement jusqu'à App → App met à jour le state → React
-        re-rend uniquement ce qui a changé.
+        onChange est l'équivalent JSX de addEventListener('change')
       */}
       <input
         type="checkbox"

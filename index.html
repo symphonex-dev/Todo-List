@@ -5,16 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mes Objectifs</title>
 
-    <!--
-      ╔══════════════════════════════════════════════════════╗
-      ║  DIFFÉRENCE JS PUR vs REACT                          ║
-      ║  En JS pur, on liait notre script.js via <script>.  ║
-      ║  Ici, Vite prend le contrôle : il transforme et     ║
-      ║  bundle tous nos fichiers .jsx en un seul JS optimisé║
-      ║  qu'il injecte lui-même dans cette balise script.    ║
-      ╚══════════════════════════════════════════════════════╝
-    -->
-
     <!-- Police Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
@@ -23,19 +13,7 @@
     />
   </head>
   <body>
-    <!--
-      LE POINT D'ENTRÉE UNIQUE DE REACT
-      React va "s'accrocher" à cette div vide et y injecter
-      TOUTE l'interface de l'application de manière dynamique.
-      C'est le seul HTML "réel" de toute l'app — tout le reste
-      est généré par nos composants JSX.
-    -->
     <div id="root"></div>
-
-    <!--
-      Vite injecte automatiquement le script compilé ici.
-      Le type="module" indique que c'est du JS moderne (ES Modules).
-    -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

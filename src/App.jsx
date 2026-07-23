@@ -1,12 +1,3 @@
-// ─────────────────────────────────────────────────────────────────
-// BLOC : IMPORTS
-//
-// On importe les hooks React dont on a besoin :
-//   • useState  → pour gérer les données réactives (todos, filter)
-//   • useEffect → pour exécuter du code en réaction à un changement
-//
-// On importe aussi les composants enfants qu'App va orchestrer.
-// ─────────────────────────────────────────────────────────────────
 import { useState, useEffect } from 'react';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
@@ -16,12 +7,6 @@ const STORAGE_KEY = 'summerGoals2026_react';
 
 // ─────────────────────────────────────────────────────────────────
 // BLOC : CHARGEMENT INITIAL DEPUIS LE LOCALSTORAGE (Lazy Initializer)
-//
-// Cette fonction est passée à useState() pour initialiser le state.
-// L'astuce : en passant une FONCTION à useState (et non une valeur),
-// React ne l'exécute qu'UNE seule fois, au premier rendu.
-// Si on avait écrit : useState(JSON.parse(localStorage.getItem(...))),
-// le localStorage serait lu à CHAQUE rendu → moins performant.
 // ─────────────────────────────────────────────────────────────────
 function loadFromLocalStorage() {
   try {
@@ -34,27 +19,9 @@ function loadFromLocalStorage() {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────
-// COMPOSANT APP — LE COMPOSANT PARENT (Racine)
-//
-// App est le "chef d'orchestre" : il possède l'état central et
-// distribue les données et fonctions à ses composants enfants
-// via les PROPS.
-//
-// POURQUOI mettre le state ici et pas dans les enfants ?
-// → Principe de "Lifting State Up" : quand plusieurs composants
-//   ont besoin des mêmes données (ex: TodoList ET le compteur
-//   ont besoin de "todos"), on remonte le state au plus proche
-//   ancêtre commun, ici App.
-// ─────────────────────────────────────────────────────────────────
 export default function App() {
 
   // ── STATE 1 : La liste des objectifs ──────────────────────────
-  // DIFFÉRENCE JS PUR :
-  // En JS pur, on avait un simple tableau let goals = []  qu'on
-  // modifiait directement. Ici, chaque modification passe par
-  // setTodos() : React détecte le changement et RE-REND
-  // automatiquement l'interface. Plus besoin de renderGoals() !
   const [todos, setTodos] = useState(loadFromLocalStorage);
 
   // ── STATE 2 : Le filtre actif ──────────────────────────────────
@@ -63,19 +30,6 @@ export default function App() {
 
   // ─────────────────────────────────────────────────────────────
   // BLOC : SAUVEGARDE AUTOMATIQUE AVEC useEffect
-  //
-  // useEffect(callback, [dépendances]) exécute le callback
-  // APRÈS chaque rendu où une dépendance a changé.
-  //
-  // Ici : à chaque fois que "todos" change (ajout, suppression,
-  // coche), React re-rend le composant et ENSUITE exécute ce
-  // useEffect pour synchroniser le localStorage.
-  //
-  // DIFFÉRENCE JS PUR :
-  // En JS pur, on appelait manuellement saveGoals() à la fin de
-  // chaque fonction (addGoal, deleteGoal, toggleGoal...).
-  // Ici, useEffect fait ce travail automatiquement : on ne peut
-  // pas oublier de sauvegarder, c'est garanti par React.
   // ─────────────────────────────────────────────────────────────
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
@@ -83,17 +37,7 @@ export default function App() {
 
   // ─────────────────────────────────────────────────────────────
   // BLOC : FONCTION AJOUTER UN OBJECTIF
-  //
-  // DIFFÉRENCE JS PUR :
-  // En JS pur : goals.push(newGoal) puis on appelait renderGoals()
-  // pour reconstruire manuellement le DOM.
-  // En React : setTodos([...todos, newGoal]) crée un NOUVEAU
-  // tableau (on ne mute jamais le state directement !), React
-  // détecte la différence et met à jour le DOM tout seul.
-  //
-  // L'opérateur spread "..." copie tous les éléments existants
-  // du tableau dans le nouveau → on ne perd rien.
-  // ─────────────────────────────────────────────────────────────
+  //─────────────────────────────────────────────────────────────
   function addTodo(text) {
     const newTodo = {
       id: Date.now(),         // Identifiant unique basé sur le timestamp
@@ -150,14 +94,6 @@ export default function App() {
     setTodos((prev) => prev.filter((todo) => !todo.completed));
   }
 
-  // ─────────────────────────────────────────────────────────────
-  // BLOC : CALCUL DES DONNÉES DÉRIVÉES
-  //
-  // Ces valeurs sont calculées à partir du state existant.
-  // On ne crée pas de nouveau state pour elles : elles sont
-  // simplement recalculées à chaque rendu (très rapide).
-  // ─────────────────────────────────────────────────────────────
-
   // Objectifs filtrés selon le filtre actif
   const filteredTodos = todos.filter((todo) => {
     if (filter === 'active') return !todo.completed;
@@ -168,21 +104,6 @@ export default function App() {
   // Compte les objectifs non complétés (pour le compteur)
   const remainingCount = todos.filter((todo) => !todo.completed).length;
 
-  // ─────────────────────────────────────────────────────────────
-  // BLOC : JSX — LA STRUCTURE VISUELLE DU COMPOSANT
-  //
-  // DIFFÉRENCE JS PUR :
-  // En JS pur, le HTML était dans index.html et on le manipulait
-  // via document.createElement, innerHTML, appendChild…
-  // En React, le HTML EST dans le JS sous forme de JSX.
-  // JSX ressemble à du HTML mais c'est du JavaScript : React le
-  // convertit en appels à document.createElement() sous le capot.
-  //
-  // PASSAGE DE PROPS :
-  // On passe nos fonctions (addTodo, deleteTodo, toggleTodo) aux
-  // composants enfants comme des attributs HTML. Les enfants
-  // peuvent ainsi "remonter" des événements vers App.
-  // ─────────────────────────────────────────────────────────────
   return (
     <div className="app-wrapper">
       <div className="app-card">
@@ -190,7 +111,7 @@ export default function App() {
         {/* ── EN-TÊTE ── */}
         <header className="app-header">
           <h1 className="app-title">🌞 Mes Objectifs</h1>
-          <p className="app-subtitle">Code · Sport · Projets</p>
+          <p className="app-subtitle">Travail · Perso · Projets</p>
         </header>
 
         {/* ── FORMULAIRE D'AJOUT ──
