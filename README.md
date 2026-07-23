@@ -23,7 +23,7 @@ Une application de gestion d'objectifs quotidiens qui permet d'ajouter, filtrer 
 
 ## 💻 Installation & Lancement en local
 1. Cloner le dépôt :
-   `git clone https://github.com/ton-pseudo/Todo-List.git`
+   `git clone https://github.com/symphonex-dev/Todo-List.git`
 2. Installer les dépendances :
    `npm install`
 3. Lancer le projet :
